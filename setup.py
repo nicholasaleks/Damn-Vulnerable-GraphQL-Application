@@ -67,7 +67,7 @@ def pump_db():
   db.session.add(owner)
   
   paste = Paste()
-  paste.title = random_title()
+  paste.title, paste.title_french = random_title()
   paste.content = "My First Paste"
   paste.public = False
   paste.owner_id = owner.id
@@ -79,7 +79,7 @@ def pump_db():
   for _ in range(0, 10 ):
     owner = Owner(name=random_owner())
     paste = Paste()
-    paste.title = random_title()
+    paste.title, paste.title_french = random_title()
     paste.content = random_content()
     paste.public = True
     paste.owner_id = owner.id

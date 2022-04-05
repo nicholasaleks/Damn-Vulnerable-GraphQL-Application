@@ -44,6 +44,7 @@ class Paste(db.Model):
   __tablename__ = 'pastes'
   id = db.Column(db.Integer, primary_key=True)
   title = db.Column(db.String)
+  title_french = db.Column(db.String)
   content = db.Column(db.String)
   public = db.Column(db.Boolean, default=False)
   user_agent = db.Column(db.String, default=None)
