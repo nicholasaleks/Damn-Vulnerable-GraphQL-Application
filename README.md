@@ -25,6 +25,11 @@ Damn Vulnerable GraphQL Application is an intentionally vulnerable implementatio
 # About DVGA
 Damn Vulnerable GraphQL is a deliberately weak and insecure implementation of GraphQL that provides a safe environment to attack a GraphQL application, allowing developers and IT professionals to test for vulnerabilities.
 
+## DVGA Operation Support
+- Queries
+- Mutations
+- Subscriptions
+
 DVGA has numerous flaws, such as Injections, Code Executions, Bypasses, Denial of Service, and more. See the full list under the [Scenarios](#scenarios) section.
 
 # Operation Modes
@@ -45,6 +50,7 @@ DVGA supports Beginner and Expert level game modes, which will change the exploi
   * GraphiQL Interface
   * GraphQL Field Suggestions
   * Server Side Request Forgery
+  * Stack Trace Errors
 * **Code Execution**
   * OS Command Injection #1
   * OS Command Injection #2
@@ -52,6 +58,7 @@ DVGA supports Beginner and Expert level game modes, which will change the exploi
   * Stored Cross Site Scripting
   * Log spoofing / Log Injection
   * HTML Injection
+  * SQL Injection
 * **Authorization Bypass**
   * GraphQL Interface Protection Bypass
   * GraphQL Query Deny List Bypass
@@ -61,11 +68,14 @@ DVGA supports Beginner and Expert level game modes, which will change the exploi
 
 # Prerequisites
 The following Python3 libraries are required:
-* Python3
+* Python3 (3.6 - 3.9) (3.10 is not supported)
 * Flask
 * Flask-SQLAlchemy
+* Flask-Sockets
+* Gevent
 * Graphene
 * Graphene-SQLAlchemy
+* Rx
 
 See [requirements.txt](requirements.txt) for dependencies.
 
@@ -80,9 +90,9 @@ See [requirements.txt](requirements.txt) for dependencies.
 `docker build -t dvga .`
 
 ### Create a container from the image
-`docker run -t -p 5000:5000 -e WEB_HOST=0.0.0.0 dvga`
+`docker run -t -p 5013:5013 -e WEB_HOST=0.0.0.0 dvga`
 
-In your browser, navigate to http://localhost:5000
+In your browser, navigate to http://localhost:5013
 
 Note: if you need the application to bind on a specific port (e.g. 8080), use **-e WEB_PORT=8080**.
 
@@ -91,11 +101,13 @@ Note: if you need the application to bind on a specific port (e.g. 8080), use **
 `docker pull dolevf/dvga`
 
 ### Create a container from the image
-`docker run -t -p 5000:5000 -e WEB_HOST=0.0.0.0 dolevf/dvga`
+`docker run -t -p 5013:5013 -e WEB_HOST=0.0.0.0 dolevf/dvga`
 
-In your browser, navigate to http://localhost:5000
+In your browser, navigate to http://localhost:5013
 
 ## Server
+**Note**: Python 3.10 is **not supported** yet!
+
 ### Navigate to /opt
 `cd /opt/`
 
@@ -108,7 +120,7 @@ In your browser, navigate to http://localhost:5000
 ### Run application
 `python3 app.py`
 
-In your browser, navigate to http://localhost:5000.
+In your browser, navigate to http://localhost:5013.
 
 # Screenshots
 ![DVGA](https://github.com/dolevf/Damn-Vulnerable-GraphQL-Application/blob/master/static/screenshots/index.png)
@@ -119,7 +131,7 @@ In your browser, navigate to http://localhost:5000.
 # Maintainers
 * [Dolev Farhi](https://github.com/dolevf)
 * [Connor McKinnon](https://github.com/connormckinnon93)
-
+* [Nick Aleks](https://github.com/nicholasaleks)
 # Contributors
 A big Thank You to the kind people who helped make DVGA better:
  * [Halfluke](https://github.com/halfluke)
@@ -140,7 +152,10 @@ A big Thank You to the kind people who helped make DVGA better:
 * [H4ck3d - Security Conference 2021 (Spanish)](https://youtu.be/hg_kVoy-W1s)
 * [Christina Hasternath - GraphQLConf 2021](https://www.youtube.com/watch?v=tPO1jl0tCKg)
 * [Hacking APIs (Ch14) by Corey Ball - No Starch Press](https://nostarch.com/hacking-apis)
-                                                                                                                                              
+* [Hacking Simplified Part #1](https://www.youtube.com/watch?v=w0QOAacuPgQ)
+* [Hacking Simplified Part #2](https://www.youtube.com/watch?v=YA-mL9Z8SNI)
+* [Hacking Simplified Part #3](https://www.youtube.com/watch?v=kUTIFx8vGQs)
+
 # Disclaimer
 DVGA is highly insecure, and as such, should not be deployed on internet facing servers. By default, the application is listening on 127.0.0.1 to avoid misconfigurations.
 

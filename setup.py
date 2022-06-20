@@ -7,7 +7,7 @@ import random
 from ipaddress import IPv4Network
 
 from app import db
-from core.models import Paste, Owner, User, Audit
+from core.models import Paste, Owner, User, ServerMode
 
 from db.agents import agents
 from db.owners import owners
@@ -45,7 +45,7 @@ def random_address():
   return random.choice(addresses)
 
 def random_password():
-  weak_passwords = ['changeme', 'password54321', 'letmein', 'admin123', 'iloveyou', '00000000']
+  weak_passwords = ['changeme']
   return random.choice(weak_passwords)
 
 def random_useragent():
@@ -57,24 +57,28 @@ def random_useragent():
 def pump_db():
   print('Populating Database')
   db.create_all()
+
   admin = User(username="admin", password=random_password())
+  operator = User(username="operator", password=random_password())
+  db.session.add(admin)
+  db.session.add(operator)
+
   owner = Owner(name='DVGAUser')
-  audit = Audit()
+  db.session.add(owner)
+
   paste = Paste()
-  paste.title = random_title()
+  paste.title = 'Testing Testing'
   paste.content = "My First Paste"
   paste.public = False
   paste.owner_id = owner.id
   paste.owner = owner
   paste.ip_addr = '127.0.0.1'
   paste.user_agent = 'User-Agent not set'
-  audit.gqloperation = 'CreatePaste'
-  db.session.add(admin)
-  db.session.add(owner)
   db.session.add(paste)
-  db.session.add(audit)
 
-  for _ in range(0, 10 ):
+  db.session.commit()
+
+  for _ in range(0, 10):
     owner = Owner(name=random_owner())
     paste = Paste()
     paste.title = random_title()
@@ -87,6 +91,10 @@ def pump_db():
 
     db.session.add(owner)
     db.session.add(paste)
+
+  mode = ServerMode()
+  mode.hardened = False
+  db.session.add(mode)
 
   db.session.commit()
 

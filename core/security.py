@@ -1,5 +1,6 @@
 import config
 import random
+import ipaddress
 import time
 
 from core import helpers
@@ -13,6 +14,15 @@ def simulate_load():
     count += 1
     if count > limit:
       return
+
+def get_network(addr, style='cidr'):
+  try:
+    if style == 'cidr':
+      return str(ipaddress.ip_network(addr))
+    else:
+      return str(ipaddress.ip_network(addr).netmask)
+  except:
+    return 'Could not identify network'
 
 def is_port(port):
   if isinstance(port, int):
@@ -56,7 +66,7 @@ def on_denylist(query):
   return False
 
 def operation_name_allowed(operation_name):
-  opnames_allowed = ['CreatePaste', 'getPastes', 'UploadPaste', 'ImportPaste']
+  opnames_allowed = ['CreatePaste', 'EditPaste', 'getPastes', 'UploadPaste', 'ImportPaste']
   if operation_name in opnames_allowed:
     return True
   return False
